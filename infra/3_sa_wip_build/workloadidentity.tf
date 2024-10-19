@@ -25,12 +25,21 @@ resource "google_iam_workload_identity_pool_provider" "github_provider" {
 
 
 # Step 5: Allow GitHub Actions to impersonate the service account using Workload Identity
+/*
 resource "google_iam_workload_identity_pool_provider_iam_member" "allow_github_impersonation" {
   provider  = google
   workload_identity_pool_id = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
   workload_identity_pool_provider_id = google_iam_workload_identity_pool_provider.github_provider.workload_identity_pool_provider_id
   role      = "roles/iam.workloadIdentityUser"
   member    = "principalSet://iam.googleapis.com/projects/${var.project_id}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.github_pool.workload_identity_pool_id}/attribute.repository/${var.github_owner}/${var.github_repo}"
+}
+*/
+
+# Step 5: Allow GitHub Actions to impersonate the service account using Workload Identity
+resource "google_iam_workload_identity_pool_iam_member" "allow_github_impersonation" {
+  workload_identity_pool_id = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
+  role                      = "roles/iam.workloadIdentityUser"
+  member                    = "principalSet://iam.googleapis.com/projects/${var.project_id}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.github_pool.workload_identity_pool_id}/attribute.repository/${var.github_owner}/${var.github_repo}"
 }
 
 
