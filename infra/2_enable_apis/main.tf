@@ -1,10 +1,7 @@
-# main.tf
-
 provider "google" {
   project = var.project_id
   region  = var.region
 }
-
 
 # Enable Cloud Build API
 resource "google_project_service" "cloud_build" {
@@ -24,10 +21,22 @@ resource "google_project_service" "cloud_run" {
   service = "run.googleapis.com"
 }
 
-# Enable IAM API (for managing permissions)
+# Enable IAM API (for managing service accounts and Workload Identity)
 resource "google_project_service" "iam" {
   project = var.project_id
   service = "iam.googleapis.com"
+}
+
+# Enable IAM Service Account Credentials API (for Workload Identity)
+resource "google_project_service" "iam_credentials" {
+  project = var.project_id
+  service = "iamcredentials.googleapis.com"
+}
+
+# Enable Cloud Resource Manager API (to manage project-level permissions)
+resource "google_project_service" "cloud_resource_manager" {
+  project = var.project_id
+  service = "cloudresourcemanager.googleapis.com"
 }
 
 # Enable Cloud Storage API (optional, for storing artifacts)
