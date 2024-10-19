@@ -4,7 +4,7 @@
 # Step 7: Create a Cloud Build Trigger
 resource "google_cloudbuild_trigger" "github_trigger" {
   location = var.region
-  name        = "github-trigger-main-branch"
+  name        = "github-trigger-main-branch-tf"
   description = "Trigger for building and deploying when code is pushed to the main branch"
   
   github {
