@@ -15,7 +15,7 @@ resource "google_cloudbuild_trigger" "github_trigger" {
     }
   }
 
-  service_account = google_service_account.ci_service_account.email # id or email?
+  service_account = google_service_account.ci_service_account.id # id or email?
   filename = "cloudbuild.yaml"
   /* -- it gives an error
   depends_on = [
