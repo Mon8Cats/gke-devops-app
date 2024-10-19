@@ -1,0 +1,9 @@
+1) check project ID
+a) console> project selector> list project name, project id
+b) console> IAM & Admin> Settings> project name, project id, project number
+  mon-devops, mon-devops, 356380479725
+c) cloud shell> gcloud config get-value project
+d) cloud shell> gcloud projects list (need authorization confirm)
+
+
+2) vpc
