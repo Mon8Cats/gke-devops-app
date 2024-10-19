@@ -15,4 +15,11 @@ resource "google_cloudbuild_trigger" "github_trigger" {
     }
   }
 
+  service_account = google_service_account.ci_service_account.email # id or email?
+  filename = "cloudbuild.yaml"
+  depends_on = [
+    google_project_iam_member.act_as,
+    google_project_iam_member.logs_writer
+  ]
+
 }
