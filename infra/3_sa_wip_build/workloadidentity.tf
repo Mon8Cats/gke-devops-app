@@ -1,3 +1,14 @@
+# Configure the Google Cloud provider
+# Create a Workload Identity Pool
+# Create a Workload Identity Pool Provider
+# Create a Service Account
+# Bind the service account to the Workload Identity Pool
+# Create a GitHub Actions secret for the service account email
+
+
+
+
+
 # Step 3: Create Workload Identity Pool
 resource "google_iam_workload_identity_pool" "github_pool" {
   provider     = google
@@ -36,12 +47,13 @@ resource "google_iam_workload_identity_pool_provider_iam_member" "allow_github_i
 */
 
 # Step 5: Allow GitHub Actions to impersonate the service account using Workload Identity
+/*
 resource "google_iam_workload_identity_pool_iam_member" "allow_github_impersonation" {
   workload_identity_pool_id = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
   role                      = "roles/iam.workloadIdentityUser"
   member                    = "principalSet://iam.googleapis.com/projects/${var.project_id}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.github_pool.workload_identity_pool_id}/attribute.repository/${var.github_owner}/${var.github_repo}"
 }
-
+*/
 
 # Step 6: Grant permission to the service account for the Workload Identity pool
 resource "google_service_account_iam_binding" "allow_impersonation" {
