@@ -52,6 +52,7 @@ steps:
 substitutions:
   _PROJECT_ID: "mon-devops"  # Replace with the actual project ID or set dynamically in GitHub Actions
 
+
 options:
-  logging: CLOUD_LOGGING_ONLY
+  logging: LEGACY   # This option can be omitted as it's the default behavior for logsBucket
 logsBucket: "gs://my-cloud-build-logs"
