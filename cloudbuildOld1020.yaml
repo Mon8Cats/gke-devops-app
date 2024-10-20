@@ -5,7 +5,7 @@ steps:
       [
         "build",
         "-t",
-        "us-central1-docker.pkg.dev/${_PROJECT_ID}/my-repo/my-app:$COMMIT_SHA",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app:$COMMIT_SHA",
         ".",
       ]
 
@@ -14,10 +14,10 @@ steps:
     args:
       [
         "push",
-        "us-central1-docker.pkg.dev/${_PROJECT_ID}/my-repo/my-app:$COMMIT_SHA",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app:$COMMIT_SHA",
       ]
 
-  # Step 3: Deploy to Cloud Run
+  # Step 3: Deploy to Cloud Run (without --allow-unauthenticated)
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: "gcloud"
     args: [
@@ -25,17 +25,17 @@ steps:
         "deploy",
         "my-app",
         "--image",
-        "us-central1-docker.pkg.dev/${_PROJECT_ID}/my-repo/my-app:$COMMIT_SHA",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app:$COMMIT_SHA",
         "--region",
         "us-central1",
         "--platform",
         "managed",
         "--service-account",
-        "ci-service-account@${_PROJECT_ID}.iam.gserviceaccount.com",
-        "--no-allow-unauthenticated",
+        "ci-service-account@${PROJECT_ID}.iam.gserviceaccount.com", # Specify the service account to use Workload Identity
+        "--no-allow-unauthenticated", # Ensures that the service requires authentication
       ]
 
-  # Step 4: Grant the Cloud Run Invoker role
+  # Step 4: Grant the Cloud Run Invoker role to the required service accounts
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: "gcloud"
     args: [
@@ -45,9 +45,9 @@ steps:
         "my-app",
         "--region",
         "us-central1",
-        "--member=serviceAccount:ci-service-account@${_PROJECT_ID}.iam.gserviceaccount.com",
+        "--member=serviceAccount:ci-service-account@${PROJECT_ID}.iam.gserviceaccount.com", # Replace with the appropriate service account
         "--role=roles/run.invoker",
       ]
 
 substitutions:
-  _PROJECT_ID: "mon-devops"  # Replace with the actual project ID or set dynamically in GitHub Actions
+  _SERVICE_NAME: "my-app"
