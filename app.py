@@ -1,14 +1,14 @@
+import os
 from flask import Flask
-import socket
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-    # Get the hostname of the current container/node
-    hostname = socket.gethostname()
-    return f"Hello, World! This is running on {hostname}."
-
+@app.route('/')
+def hello():
+    return "Hello, Cloud Run!"
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    # Set the port to listen on, provided by Cloud Run (default to 8080)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
+
