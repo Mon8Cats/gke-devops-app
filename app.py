@@ -9,5 +9,6 @@ def hello_world():
     hostname = socket.gethostname()
     return f"Hello, World! This is running on {hostname}."
 
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
